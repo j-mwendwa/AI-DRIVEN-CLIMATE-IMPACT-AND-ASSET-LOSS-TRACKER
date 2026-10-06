@@ -1,0 +1,6 @@
+# gitignore models/ (large checkpoints)
+models/
+__pycache__/
+*.pyc
+.env
+data/
