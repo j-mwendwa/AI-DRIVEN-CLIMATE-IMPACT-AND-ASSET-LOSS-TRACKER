@@ -44,7 +44,7 @@ print('Labels:', [LABEL_NAMES[i] for i in ex['ner_tags'][:6]])
 ```bash
 python -m climate_ner.train \
   --output-dir models/climate-ner-indus \
-  --epochs 5 \
+  --epochs 15 \
   --batch-size 16 \
   --lr 2e-5
 ```

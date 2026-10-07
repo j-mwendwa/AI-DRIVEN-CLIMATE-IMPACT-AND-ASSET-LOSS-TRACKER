@@ -8,7 +8,7 @@ Run locally (CPU smoke-test):
 Run in Google Colab (T4 GPU, recommended):
     python -m climate_ner.train \\
         --output-dir /content/climate-ner-indus \\
-        --epochs 5 \
+        --epochs 15 \
         --batch-size 16 \\
         --lr 2e-5
 
@@ -374,7 +374,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--epochs",
         type=int,
-        default=5,
+        default=15,
         help="Number of training epochs",
     )
     main(parser.parse_args())
