@@ -11,7 +11,7 @@ CLIMATE-TECH/
 ├── src/climate_ner/
 │   ├── dataset.py      # IOB parser + class weight computation
 │   ├── train.py        # fine-tuning entry point (WeightedLossTrainer)
-│   ├── evaluate.py     # per-entity seqeval report on test set
+│   ├── ner_eval.py     # per-entity seqeval report on test set
 │   └── predict.py      # ClimateNER inference wrapper
 ├── notebooks/
 │   └── colab_train.ipynb   # Ready-to-run Colab notebook
@@ -52,7 +52,7 @@ python -m climate_ner.train \
 ## Evaluation
 
 ```bash
-python -m climate_ner.evaluate --model-dir models/climate-ner-indus
+python -m climate_ner.ner_eval --model-dir models/climate-ner-indus
 ```
 
 ## Inference

@@ -8,7 +8,7 @@ Run locally (CPU smoke-test):
 Run in Google Colab (T4 GPU, recommended):
     python -m climate_ner.train \\
         --output-dir /content/climate-ner-indus \\
-        --epochs 5 \\
+        --epochs 5 \
         --batch-size 16 \\
         --lr 2e-5
 
@@ -40,6 +40,7 @@ from transformers import (
     DataCollatorForTokenClassification,
     Trainer,
     TrainingArguments,
+    EarlyStoppingCallback,
 )
 
 from climate_ner.dataset import (
@@ -258,9 +259,11 @@ def main(args: argparse.Namespace) -> None:
     # ── Class weights ─────────────────────────────────────────────────────
     print("→ [5/5] Computing class weights for weighted loss...")
     class_weights = compute_class_weights(ds["train"], cap=10.0)
-    print(f"   O weight={class_weights[0]:.4f}  |  "
-          f"max weight={max(class_weights):.4f}  |  "
-          f"n_classes={len(class_weights)}")
+    print(
+        f"   O weight={class_weights[0]:.4f}  |  "
+        f"max weight={max(class_weights):.4f}  |  "
+        f"n_classes={len(class_weights)}"
+    )
 
     # ── TrainingArguments ─────────────────────────────────────────────────
     training_args = TrainingArguments(
@@ -299,6 +302,8 @@ def main(args: argparse.Namespace) -> None:
 
         # Disable third-party trackers (clean Colab output)
         report_to="none",
+
+        overwrite_output_dir=True,  # allow re-run in same output dir
     )
 
     # ── Trainer ───────────────────────────────────────────────────────────
@@ -314,6 +319,7 @@ def main(args: argparse.Namespace) -> None:
         data_collator=data_collator,
         compute_metrics=compute_metrics,
         class_weights=class_weights,
+        callbacks= [EarlyStoppingCallback(early_stopping_patience=2)],
     )
 
     # ── Train ─────────────────────────────────────────────────────────────
@@ -336,7 +342,7 @@ def main(args: argparse.Namespace) -> None:
             print(f"   {k}: {v:.4f}")
 
     print(f"\n✓ Done. Model saved to: {args.output_dir}")
-    print("  Next step: python -m climate_ner.evaluate --model-dir", args.output_dir)
+    print("  Next step: python -m climate_ner.ner_eval --model-dir", args.output_dir)
 
 
 # ---------------------------------------------------------------------------

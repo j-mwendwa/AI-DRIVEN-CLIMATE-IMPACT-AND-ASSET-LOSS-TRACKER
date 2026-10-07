@@ -1,9 +1,12 @@
 """
-evaluate.py — Run the fine-tuned model against the held-out test set
+ner_eval.py — Run the fine-tuned model against the held-out test set
               and print a full per-entity-type seqeval classification report.
 
+Named ner_eval.py (NOT evaluate.py) to avoid shadowing the installed
+HuggingFace 'evaluate' package when Python searches this directory.
+
 Usage:
-    python -m climate_ner.evaluate --model-dir models/climate-ner-indus
+    python -m climate_ner.ner_eval --model-dir models/climate-ner-indus
 """
 from __future__ import annotations
 
